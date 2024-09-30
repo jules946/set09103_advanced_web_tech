@@ -1,0 +1,30 @@
+name: Build and Deploy Flask App
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build_local:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-app .
+
+      - name: Tag Docker image
+        run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/flask-app:latest ${{ secrets.DOCKER_USERNAME }}/flask-app:latest
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/flask-app:latest
