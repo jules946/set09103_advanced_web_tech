@@ -31,7 +31,7 @@ jobs:
             git pull origin Feature/DockerCICD
             
             # Step 1: Build the Docker image
-            sudo docker build -t flask-app:latest .
+            sudo docker build -t flask-app .
 
             # Step 2: Deploy the Docker container
             sudo docker compose up -d flask-app
