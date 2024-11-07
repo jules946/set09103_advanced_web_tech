@@ -24,10 +24,10 @@ jobs:
             # Navigate to repo on the VM
             cd /home/40277946/set09103_advanced_web_tech
             
-            # Pull the latest code from GitHub Feature/DockerCICD branch
+            # Pull the latest code from master branch
             git fetch origin
-            git checkout Feature/DockerCICD
-            git pull origin Feature/DockerCICD
+            git checkout master
+            git pull origin master
             
             # Step 1: Build the Docker image
             sudo docker build -t flask-app .
