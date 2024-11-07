@@ -8,8 +8,8 @@ WORKDIR /app
 COPY ./src /app/src
 
 # Copy templates and static dirs
-# COPY ./templates /app/templates
-# COPY ./static /app/static
+COPY ./templates /app/templates
+COPY ./static /app/static
 
 # Copy requirements.txt and install dependencies
 COPY requirements.txt /app/
