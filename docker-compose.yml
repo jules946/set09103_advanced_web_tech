@@ -1,6 +1,7 @@
 services:
   flask-app:
-    image: flask-app
+    build:
+      context: .
     ports:
       - "5000:5000"
 
