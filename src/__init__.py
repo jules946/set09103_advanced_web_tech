@@ -2,11 +2,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
+from dotenv import load_dotenv
 
 # create db and login_manager instances
 db = SQLAlchemy()
 login_manager = LoginManager()
-
+load_dotenv()
 
 def create_app():
     """
@@ -44,7 +45,9 @@ def create_app():
     # import and register blueprints
     from src.routes.auth import auth_bp
     from src.routes.main import main_bp
+    from src.routes.players import players_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp)
+    app.register_blueprint(players_bp)
 
     return app

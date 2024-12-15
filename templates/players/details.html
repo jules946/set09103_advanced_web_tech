@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ player.first_name }} {{ player.last_name }} - Player Details{% endblock %}
+
+{% block content %}
+<div class="player-details">
+    <h1>{{ player.first_name }} {{ player.last_name }}</h1>
+    
+    <div class="player-info">
+        <p>Team: {{ player.team.full_name }}</p>
+        <p>Position: {{ player.position }}</p>
+        <p>Height: {{ player.height_feet }}'{{ player.height_inches }}"</p>
+        <p>Weight: {{ player.weight_pounds }} lbs</p>
+    </div>
+
+    {% if stats %}
+    <div class="player-stats">
+        <h2>Season Stats</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-label">PPG</span>
+                <span class="stat-value">{{ stats[0].pts }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">RPG</span>
+                <span class="stat-value">{{ stats[0].reb }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">APG</span>
+                <span class="stat-value">{{ stats[0].ast }}</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
