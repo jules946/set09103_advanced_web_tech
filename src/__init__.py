@@ -46,8 +46,12 @@ def create_app():
     from src.routes.auth import auth_bp
     from src.routes.main import main_bp
     from src.routes.players import players_bp
+    from src.routes.search import search_bp
+    from src.routes.teams import teams_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp)
     app.register_blueprint(players_bp)
+    app.register_blueprint(search_bp)
+    app.register_blueprint(teams_bp)
 
     return app

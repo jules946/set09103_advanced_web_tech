@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <h1>Search NBA Players and Teams</h1>
+
+    <form action="{{ url_for('search.unified_search') }}" method="GET">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search players or teams...">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if players or teams %}
+        {% if players %}
+        <section class="players-section">
+            <h2>Players</h2>
+            <div class="players-grid">
+                {% for player in players %}
+                <div class="player-card">
+                    <h3>{{ player.first_name }} {{ player.last_name }}</h3>
+                    <p>{{ player.team.full_name }}</p>
+                    <a href="{{ url_for('players.player_details', player_id=player.id) }}" class="btn">View Details</a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if teams %}
+        <section class="teams-section">
+            <h2>Teams</h2>
+            <div class="teams-grid">
+                {% for team in teams %}
+                <div class="team-card">
+                    <h3>{{ team.full_name }}</h3>
+                    <p>{{ team.conference }} Conference</p>
+                    <a href="{{ url_for('teams.team_details', team_id=team.id) }}" class="btn">View Team</a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    {% elif query %}
+        <p>No results found matching "{{ query }}"</p>
+    {% endif %}
+</div>
+{% endblock %}
