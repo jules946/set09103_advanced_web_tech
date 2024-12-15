@@ -6,9 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <title>{% block title %}DunkData: NBA Stats{% endblock %}</title>
-    {% block head %}{% endblock %}
 </head>
 <body>
-    {% block body %}{% endblock %}
+    {#Nav Bar#}
+    <nav class="nav">
+        <div class="nav-links">
+            <a href="{{ url_for('main.index') }}">Home</a>
+        </div>
+        <div class="auth-links">
+            {% if current_user.is_authenticated %}
+                <span>Welcome, {{ current_user.username }}!</span>
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login</a>
+                <a href="{{ url_for('auth.signup') }}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {#Flash messages#}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}
+    {% endblock %}
+
+    <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
 </body>
 </html>
