@@ -26,10 +26,20 @@
     text-decoration: underline;
 }
 
+/* Flash Message Styling */
 .flash-message {
-    margin: 1rem 0;
-    padding: 0.5rem;
-    border-radius: 4px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 1s ease-out;
 }
 
 .flash-success {
@@ -45,6 +55,10 @@
 .flash-info {
     background-color: #2196f3;
     color: white;
+}
+
+.fade-out {
+    opacity: 0;
 }
 
 
