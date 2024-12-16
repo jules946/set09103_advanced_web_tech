@@ -3,46 +3,90 @@
 {% block title %}Search Results{% endblock %}
 
 {% block content %}
-<div class="search-container">
-    <h1>Search NBA Players and Teams</h1>
+<div class="search-container max-w-6xl mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-6">Search NBA Players and Teams</h1>
 
-    <form action="{{ url_for('search.unified_search') }}" method="GET">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search players or teams...">
-        <button type="submit">Search</button>
+    <form action="{{ url_for('search.unified_search') }}" method="GET" class="mb-8">
+        <div class="flex gap-2">
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                placeholder="Search players or teams..."
+                class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Search
+            </button>
+        </div>
     </form>
 
-    {% if players or teams %}
-        {% if players %}
-        <section class="players-section">
-            <h2>Players</h2>
-            <div class="players-grid">
-                {% for player in players %}
-                <div class="player-card">
-                    <h3>{{ player.first_name }} {{ player.last_name }}</h3>
-                    <p>{{ player.team.full_name }}</p>
-                    <a href="{{ url_for('players.player_details', player_id=player.id) }}" class="btn">View Details</a>
-                </div>
-                {% endfor %}
+    {% if results %}
+        <div class="results-table">
+            <div class="table-header">
+                <div class="header-cell type-cell">Type</div>
+                <div class="header-cell name-cell">Name</div>
+                <div class="header-cell affiliation-cell">Team/Conference</div>
+                <div class="header-cell action-cell">Action</div>
             </div>
-        </section>
-        {% endif %}
 
-        {% if teams %}
-        <section class="teams-section">
-            <h2>Teams</h2>
-            <div class="teams-grid">
-                {% for team in teams %}
-                <div class="team-card">
-                    <h3>{{ team.full_name }}</h3>
-                    <p>{{ team.conference }} Conference</p>
-                    <a href="{{ url_for('teams.team_details', team_id=team.id) }}" class="btn">View Team</a>
+            <div id="results-container">
+                {% for result in results %}
+                <div class="table-row result-row" data-page="{{ (loop.index0 // 10) + 1 }}">
+                    <div class="cell type-cell">
+                        <span class="type-badge {% if result.type == 'player' %}player-badge{% else %}team-badge{% endif %}">
+                            {{ result.type|capitalize }}
+                        </span>
+                    </div>
+                    <div class="cell name-cell">
+                        {% if result.type == 'player' %}
+                            {{ result.data.first_name }} {{ result.data.last_name }}
+                        {% else %}
+                            {{ result.data.full_name }}
+                        {% endif %}
+                    </div>
+                    <div class="cell affiliation-cell">
+                        {% if result.type == 'player' %}
+                            {{ result.data.team.full_name }}
+                        {% else %}
+                            {{ result.data.conference }} Conference
+                        {% endif %}
+                    </div>
+                    <div class="cell action-cell">
+                        {% if result.type == 'player' %}
+                            <a href="{{ url_for('players.player_details', player_id=result.data.id) }}"
+                               class="view-button">
+                                View Details
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('teams.team_details', team_id=result.data.id) }}"
+                               class="view-button">
+                                View Details
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
-        </section>
-        {% endif %}
+        </div>
+
+        <div class="pagination-controls flex justify-between items-center mt-4 px-4">
+            <button id="prev-page" class="pagination-button" disabled>
+                ← Previous
+            </button>
+            <span id="page-info" class="text-gray-600">
+                Page <span id="current-page">1</span> of <span id="total-pages">{{ (results|length + 9) // 10 }}</span>
+            </span>
+            <button id="next-page" class="pagination-button" {% if results|length <= 10 %}disabled{% endif %}>
+                Next →
+            </button>
+        </div>
     {% elif query %}
-        <p>No results found matching "{{ query }}"</p>
+        <p class="text-gray-600 text-center py-8">No results found matching "{{ query }}"</p>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
 {% endblock %}
