@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ team.full_name }}{% endblock %}
+
+{% block content %}
+<div class="team-details">
+    <h1>{{ team.full_name }}</h1>
+    
+    <div class="team-info">
+        <div class="info-card">
+            <h2>Team Information</h2>
+            <ul>
+                <li><strong>City:</strong> {{ team.city }}</li>
+                <li><strong>Conference:</strong> {{ team.conference }}</li>
+                <li><strong>Division:</strong> {{ team.division }}</li>
+                <li><strong>Abbreviation:</strong> {{ team.abbreviation }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
