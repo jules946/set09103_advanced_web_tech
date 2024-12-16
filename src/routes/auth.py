@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from ..models import db, User
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
+
+from ..services.balldontlie_api import BDLAPIService
 
 # create a Blueprint for the auth routes
 auth_bp = Blueprint('auth', __name__)
@@ -77,3 +79,30 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('auth.login'))
+
+
+@auth_bp.route('/preferences', methods=['GET', 'POST'])
+@login_required
+def preferences():
+    """
+    Handle the user preferences route
+    """
+    api_service = BDLAPIService()
+
+    if request.method == 'POST':
+        favorite_team = request.form['team']
+        favorite_player = request.form['player']
+
+        with current_app.app_context():
+            current_user.favorite_team = favorite_team
+            current_user.favorite_player = favorite_player
+            db.session.commit()
+
+        flash('Preferences saved successfully!', 'success')
+        return redirect(url_for('auth.preferences'))
+
+    # Get teams and players from API
+    teams = api_service.search_teams("")
+    players = api_service.search_players("")
+
+    return render_template('preferences.html', teams=teams, players=players)
