@@ -1,4 +1,4 @@
-from nba_api.stats.static import players
+from nba_api.stats.static import players, teams
 
 
 class NBAAPIService:
@@ -27,4 +27,23 @@ class NBAAPIService:
         player_id = self._get_player_id(first_name, second_name)
         if player_id:
             return f"https://cdn.nba.com/headshots/nba/latest/1040x760/{player_id}.png"
+        return self.placeholder_pic_url
+
+    @staticmethod
+    def get_team_id(team_name):
+        """
+        Get team by name
+        """
+        team_info = teams.find_teams_by_full_name(team_name)
+        if team_info:
+            return team_info[0]['id']
+        return None
+
+    def get_team_logo(self, team_name):
+        """
+        Get team_id logo by team_id name
+        """
+        team_id = self.get_team_id(team_name)
+        if team_id:
+            return f"https://cdn.nba.com/logos/nba/{team_id}/global/L/logo.svg"
         return self.placeholder_pic_url
