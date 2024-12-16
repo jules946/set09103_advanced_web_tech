@@ -24,6 +24,7 @@ class NBAApiService:
             print("Response Text:", response.text)
         return []
 
+
     def get_player(self, player_id):
         """Get player details by ID"""
         response = requests.get(f"{self.base_url}/players/{player_id}", headers=self.headers)
@@ -37,62 +38,75 @@ class NBAApiService:
 
     def search_teams(self, search_query):
         """
-        Search teams by name using fuzzy matching, returns teams sorted by match quality.
+        Get lis of all teams.
         """
         # fetch all teams from the API
         response = requests.get(f"{self.base_url}/teams", headers=self.headers)
-        all_teams = self.process_response(response)
-
-        # NBA data api doesn't have search functionality, unlike the players
-        scored_matches = []
-        
-        for team in all_teams:
-            # calculate match scores for both full_name and name
-            full_name_score = fuzz.partial_ratio(search_query.lower(), team["full_name"].lower())
-            name_score = fuzz.partial_ratio(search_query.lower(), team["name"].lower())
-
-            # check for exact substring matches
-            query_lower = search_query.lower()
-            full_name_contains = query_lower in team["full_name"].lower()
-            name_contains = query_lower in team["name"].lower()
-
-            # only consider the higher of the two scores
-            final_score = max(full_name_score, name_score)
-
-            # add bonus points for exact substring matches
-            if full_name_contains or name_contains:
-                final_score += 20
-
-            # filter down to high quality matches
-            if final_score >= 80:
-                scored_matches.append({
-                    "team": team,
-                    "score": final_score
-                })
-
-        # sort score in descending order
-        scored_matches.sort(key=lambda x: x["score"], reverse=True)
-
-        # return team details from the initial API response
-        return [match["team"] for match in scored_matches]
+        return self.process_response(response)
 
     def get_team(self, team_id):
         """Get team details by ID"""
         response = requests.get(f"{self.base_url}/teams/{team_id}", headers=self.headers)
         return self.process_response(response)
 
-    def unified_search(self, query: str) -> Dict[str, List]:
+    def unified_search(self, search_query: str) -> Dict[str, List]:
         """
-        Perform a unified search for both players and teams
-        Returns a dictionary with both player and team results
+        Perform a unified search for both players and teams,
+        returning results sorted by match relevance.
         """
-        players = self.search_players(query)
-        teams = self.search_teams(query)
+        # get API results
+        players = self.search_players(search_query)
+        teams = self.search_teams(search_query)
+
+        # create unified results list with match scores
+        unified_results = []
+
+        # helper function to calculate normalized scores
+        def calculate_score(query: str, target: str) -> float:
+            # primary score using WRatio
+            calculated_score = fuzz.WRatio(query.lower(), target.lower())
+
+            # adjust score if search query is a substring of target
+            # e.g. "LeBron" should match "LeBron James"
+            if query.lower() in target.lower():
+                calculated_score += int((len(query) / len(target)) * 20)
+
+            return min(calculated_score, 100)
+
+        # process players
+        for player in players:
+            name = f"{player['first_name']} {player['last_name']}"
+            score = calculate_score(search_query, name)
+
+            if score > 80:
+                unified_results.append({
+                    "type": "player",
+                    "data": player,
+                    "score": score
+                })
+
+        # process teams
+        for team in teams:
+            # calculate match scores for both full_name and name
+            full_name_score = calculate_score(search_query, team["full_name"])
+            name_score = calculate_score(search_query, team["name"])
+
+            # only consider the higher of the two scores
+            score = max(full_name_score, name_score)
+
+            if score > 80:
+                unified_results.append({
+                    "type": "team",
+                    "data": team,
+                    "score": score
+                })
+
+        # sort all results by score, descending
+        unified_results.sort(key=lambda x: x['score'], reverse=True)
 
         return {
-            "players": players,
-            "teams": teams,
-            "total_results": len(players) + len(teams)
+            "results": unified_results,
+            "total_results": len(unified_results)
         }
 
     def get_player_stats(self, player_id, season=2024):
