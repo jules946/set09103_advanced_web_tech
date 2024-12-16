@@ -33,7 +33,7 @@ class BDLAPIService:
     def search_players(self, name):
         """Search players by name"""
         params = {"search": name}
-        response = requests.get(f"{self.base_url}/players", headers=self.headers, params=params)
+        response = requests.get(f"{self.base_url}/players/active", headers=self.headers, params=params)
         return self.process_response(response)
 
     def search_teams(self, search_query):
