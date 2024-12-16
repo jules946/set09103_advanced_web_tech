@@ -49,25 +49,34 @@ class NBAApiService:
         response = requests.get(f"{self.base_url}/teams/{team_id}", headers=self.headers)
         return self.process_response(response)
 
-    def unified_search(self, query: str) -> Dict[str, List]:
+    def unified_search(self, search_query: str) -> Dict[str, List]:
         """
         Perform a unified search for both players and teams,
-        returning results sorted by match relevance
+        returning results sorted by match relevance.
         """
         # get API results
-        players = self.search_players(query)
-        teams = self.search_teams(query)
+        players = self.search_players(search_query)
+        teams = self.search_teams(search_query)
 
         # create unified results list with match scores
         unified_results = []
 
+        # helper function to calculate normalized scores
+        def calculate_score(query: str, target: str) -> float:
+            # primary score using WRatio
+            calculated_score = fuzz.WRatio(query.lower(), target.lower())
+
+            # adjust score if search query is a substring of target
+            # e.g. "LeBron" should match "LeBron James"
+            if query.lower() in target.lower():
+                calculated_score += int((len(query) / len(target)) * 20)
+
+            return min(calculated_score, 100)
+
         # process players
         for player in players:
             name = f"{player['first_name']} {player['last_name']}"
-            score = fuzz.partial_ratio(query.lower(), name.lower())
-            # bonus for exact substring matches
-            if query.lower() in name.lower():
-                score += 20
+            score = calculate_score(search_query, name)
 
             if score > 80:
                 unified_results.append({
@@ -78,10 +87,12 @@ class NBAApiService:
 
         # process teams
         for team in teams:
-            score = fuzz.partial_ratio(query.lower(), team['full_name'].lower())
-            # bonus for exact substring matches
-            if query.lower() in team['full_name'].lower():
-                score += 20
+            # calculate match scores for both full_name and name
+            full_name_score = calculate_score(search_query, team["full_name"])
+            name_score = calculate_score(search_query, team["name"])
+
+            # only consider the higher of the two scores
+            score = max(full_name_score, name_score)
 
             if score > 80:
                 unified_results.append({
