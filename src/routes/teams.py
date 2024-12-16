@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, abort
-from ..services.balldontlie_api import NBAApiService
+from ..services.balldontlie_api import BDLAPIService
 
 teams_bp = Blueprint('teams', __name__)
-nba_api = NBAApiService()
+nba_api = BDLAPIService()
 
 
 @teams_bp.route('/team/<int:team_id>')

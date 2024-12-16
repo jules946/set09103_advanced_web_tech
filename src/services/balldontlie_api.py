@@ -3,7 +3,7 @@ import requests
 from typing import Dict, List
 from rapidfuzz import process, fuzz
 
-class NBAApiService:
+class BDLAPIService:
     """
     Service class to interact with the balldontlie NBA API
     """

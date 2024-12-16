@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, abort
-from ..services.balldontlie_api import NBAApiService
+from ..services.balldontlie_api import BDLAPIService
 
 search_bp = Blueprint('search', __name__)
-nba_api = NBAApiService()
+nba_api = BDLAPIService()
 
 @search_bp.route('/search')
 def unified_search():
