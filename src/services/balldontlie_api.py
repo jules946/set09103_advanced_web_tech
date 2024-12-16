@@ -1,7 +1,8 @@
 import os
 import requests
 from typing import Dict, List
-from rapidfuzz import process, fuzz
+from rapidfuzz import fuzz
+from datetime import datetime, timedelta
 
 class BDLAPIService:
     """
@@ -23,7 +24,6 @@ class BDLAPIService:
             print(f"Error: Received status code {response.status_code}")
             print("Response Text:", response.text)
         return []
-
 
     def get_player(self, player_id):
         """Get player details by ID"""
@@ -117,3 +117,35 @@ class BDLAPIService:
         }
         response = requests.get(f"{self.base_url}/season_averages", headers=self.headers, params=params)
         return self.process_response(response)
+
+    def get_team_games(self, team_id, status):
+        """
+        Get the last 3 and next 3 games for a team based on the current date.
+        """
+        # TODO: this will be bad during off season
+        # calculate the date range: two weeks before and after current date
+
+        today = datetime.now()
+        start_date = (today - timedelta(weeks=2)).strftime("%Y-%m-%d")
+        end_date = (today + timedelta(weeks=2)).strftime("%Y-%m-%d")
+
+        # Set params based on status
+        params = {
+            "team_ids[]": team_id,
+            "start_date": start_date,
+            "end_date": end_date
+        }
+
+        # make request
+        response = requests.get(f"{self.base_url}/games", headers=self.headers, params=params)
+        games = self.process_response(response)
+
+        # filter games by status and return the appropriate 3 games
+        if status == "completed":
+            completed_games = [game for game in games if game["status"] == "Final"]
+            return completed_games[-3:]
+        elif status == "upcoming":
+            upcoming_games = [game for game in games if game["status"] not in ["Final", ""]]
+            return upcoming_games[:3]
+        else:
+            raise ValueError("Invalid status. Must be 'upcoming' or 'completed'.")
