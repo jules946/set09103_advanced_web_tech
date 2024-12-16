@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, abort
-from ..services.nba_api import NBAApiService
+from ..services.balldontlie_api import NBAApiService
 
 teams_bp = Blueprint('teams', __name__)
 nba_api = NBAApiService()

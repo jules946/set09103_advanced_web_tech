@@ -3,34 +3,55 @@
 {% block title %}{{ player.first_name }} {{ player.last_name }} - Player Details{% endblock %}
 
 {% block content %}
-<div class="player-details">
-    <h1>{{ player.first_name }} {{ player.last_name }}</h1>
-    
-    <div class="player-info">
-        <p>Team: {{ player.team.full_name }}</p>
-        <p>Position: {{ player.position }}</p>
-        <p>Height: {{ player.height_feet }}'{{ player.height_inches }}"</p>
-        <p>Weight: {{ player.weight_pounds }} lbs</p>
+<div class="player-card">
+    <div class="player-image">
+        <img src="/path/to/player/image" alt="{{ player.first_name }} {{ player.last_name }}">
     </div>
 
-    {% if stats %}
-    <div class="player-stats">
-        <h2>Season Stats</h2>
-        <div class="stats-grid">
-            <div class="stat-item">
-                <span class="stat-label">PPG</span>
-                <span class="stat-value">{{ stats[0].pts }}</span>
+    <div class="player-content">
+        <div class="player-header">
+            <h1 class="player-name">{{ player.first_name }} {{ player.last_name }}</h1>
+            <div class="player-team">{{ player.team.full_name }}</div>
+        </div>
+
+        <div class="player-details">
+            <div class="detail-item">
+                <span>Position</span>
+                <span>{{ player.position }}</span>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">RPG</span>
-                <span class="stat-value">{{ stats[0].reb }}</span>
+            <div class="detail-item">
+                <span>Height</span>
+                <span>{{ player.height }}</span>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">APG</span>
-                <span class="stat-value">{{ stats[0].ast }}</span>
+            <div class="detail-item">
+                <span>Weight</span>
+                <span>{{ player.weight }} lbs</span>
+            </div>
+            <div class="detail-item">
+                <span>Games</span>
+                <span>{{ stats[0].games_played }}</span>
             </div>
         </div>
+
+        {% if stats %}
+        <div class="stats-section">
+            <h2 class="stats-header">Season Highlights</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-label">Points</span>
+                    <span class="stat-value">{{ "%.1f"|format(stats[0].pts) }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Rebounds</span>
+                    <span class="stat-value">{{ "%.1f"|format(stats[0].reb) }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Assists</span>
+                    <span class="stat-value">{{ "%.1f"|format(stats[0].ast) }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 {% endblock %}

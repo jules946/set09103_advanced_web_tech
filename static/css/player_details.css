@@ -1,0 +1,114 @@
+/* Player Card Container */
+.player-card {
+    max-width: 400px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Player Image Section */
+.player-image {
+    width: 100%;
+    height: 300px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 3px solid #e0e0e0;
+}
+
+.player-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Player Content Section */
+.player-content {
+    padding: 1.5rem;
+}
+
+/* Player Header */
+.player-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+}
+
+.player-name {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.player-team {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+/* Player Details Grid */
+.player-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background: #f8f8f8;
+    border-radius: 6px;
+}
+
+/* Stats Section */
+.stats-section {
+    margin-top: 1.5rem;
+}
+
+.stats-header {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: #f8f8f8;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    background: #f0f0f0;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}

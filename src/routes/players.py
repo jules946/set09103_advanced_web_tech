@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, abort
-from ..services.nba_api import NBAApiService
+from flask import Blueprint, render_template, abort
+from ..services.balldontlie_api import NBAApiService
 
 players_bp = Blueprint('players', __name__)
 nba_api = NBAApiService()
@@ -15,4 +15,8 @@ def player_details(player_id):
         abort(404)
 
     stats = nba_api.get_player_stats(player_id)
+    # TODO: Create 404 page
+    if not stats:
+        print(f"No stats found for player: {player_id}")
+        abort(404)
     return render_template('players/details.html', player=player, stats=stats)
