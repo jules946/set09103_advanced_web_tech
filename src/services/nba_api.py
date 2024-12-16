@@ -1,6 +1,7 @@
 import os
 import requests
 from typing import Dict, List
+from rapidfuzz import process, fuzz
 
 class NBAApiService:
     """
@@ -34,11 +35,46 @@ class NBAApiService:
         response = requests.get(f"{self.base_url}/players", headers=self.headers, params=params)
         return self.process_response(response)
 
-    def search_teams(self, name):
-        """Search teams by name"""
-        params = {"search": name}
-        response = requests.get(f"{self.base_url}/teams", headers=self.headers, params=params)
-        return self.process_response(response)
+    def search_teams(self, search_query):
+        """
+        Search teams by name using fuzzy matching, returns teams sorted by match quality.
+        """
+        # fetch all teams from the API
+        response = requests.get(f"{self.base_url}/teams", headers=self.headers)
+        all_teams = self.process_response(response)
+
+        # NBA data api doesn't have search functionality, unlike the players
+        scored_matches = []
+        
+        for team in all_teams:
+            # calculate match scores for both full_name and name
+            full_name_score = fuzz.partial_ratio(search_query.lower(), team["full_name"].lower())
+            name_score = fuzz.partial_ratio(search_query.lower(), team["name"].lower())
+
+            # check for exact substring matches
+            query_lower = search_query.lower()
+            full_name_contains = query_lower in team["full_name"].lower()
+            name_contains = query_lower in team["name"].lower()
+
+            # only consider the higher of the two scores
+            final_score = max(full_name_score, name_score)
+
+            # add bonus points for exact substring matches
+            if full_name_contains or name_contains:
+                final_score += 20
+
+            # filter down to high quality matches
+            if final_score >= 80:
+                scored_matches.append({
+                    "team": team,
+                    "score": final_score
+                })
+
+        # sort score in descending order
+        scored_matches.sort(key=lambda x: x["score"], reverse=True)
+
+        # return team details from the initial API response
+        return [match["team"] for match in scored_matches]
 
     def get_team(self, team_id):
         """Get team details by ID"""
