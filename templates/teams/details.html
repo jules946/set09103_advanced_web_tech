@@ -1,20 +1,114 @@
 {% extends "base.html" %}
 
-{% block title %}{{ team.full_name }}{% endblock %}
+{% block title %}{{ team.full_name }} - Team Details{% endblock %}
 
 {% block content %}
-<div class="team-details">
-    <h1>{{ team.full_name }}</h1>
-    
-    <div class="team-info">
-        <div class="info-card">
-            <h2>Team Information</h2>
-            <ul>
-                <li><strong>City:</strong> {{ team.city }}</li>
-                <li><strong>Conference:</strong> {{ team.conference }}</li>
-                <li><strong>Division:</strong> {{ team.division }}</li>
-                <li><strong>Abbreviation:</strong> {{ team.abbreviation }}</li>
-            </ul>
+<div class="main-content">
+    <div class="grid">
+        <!-- Team Info Column -->
+        <div class="col-span-2 lg:col-span-2">
+            <div class="team-card">
+                <div class="team-banner">
+                    {% if team_logo_url %}
+                        <img src="{{ team_logo_url }}" alt="{{ team.full_name }} logo">
+                    {% else %}
+                        <div class="team-banner-placeholder">{{ team.abbreviation }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="team-content">
+                    <div class="team-header">
+                        <h1 class="team-name">{{ team.full_name }}</h1>
+                        <div class="team-location">{{ team.city }}</div>
+                    </div>
+
+                    <div class="team-details">
+                        <div class="detail-item">
+                            <span>Conference</span>
+                            <span>{{ team.conference }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>Division</span>
+                            <span>{{ team.division }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>Abbreviation</span>
+                            <span>{{ team.abbreviation }}</span>
+                        </div>
+                    </div>
+
+                    {% if team_stats %}
+                    <div class="stats-section">
+                        <h2 class="stats-header">Season Statistics</h2>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Wins</span>
+                                <span class="stat-value">{{ team_stats.wins }}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Losses</span>
+                                <span class="stat-value">{{ team_stats.losses }}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Win %</span>
+                                <span class="stat-value">{{ "%.1f"|format(team_stats.win_percentage) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Games Column -->
+        <div class="col-span-1 lg:col-span-1">
+            <!-- Upcoming Games Section -->
+            <div class="games-section">
+                <h2 class="text-xl font-bold mb-4">Upcoming Games</h2>
+                {% if upcoming_games %}
+                    {% for game in upcoming_games %}
+                    <div class="game-card mb-3 p-4 bg-white rounded shadow">
+                        <div class="game-date text-sm text-gray-600">
+                            {{ game.date }}
+                        </div>
+                        <div class="teams-container">
+                            <div class="team">
+                                {{ game.home_team.abbreviation }}
+                                <span class="text-gray-400">vs</span>
+                                {{ game.visitor_team.abbreviation }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-gray-500">No upcoming games scheduled</p>
+                {% endif %}
+            </div>
+
+            <!-- Recent Games Section -->
+            <div class="games-section">
+                <h2 class="text-xl font-bold mb-4">Recent Games</h2>
+                {% if recent_games %}
+                    {% for game in recent_games %}
+                    <div class="game-card mb-3 p-4 bg-white rounded shadow">
+                        <div class="game-date text-sm text-gray-600">
+                            {{ game.date }}
+                        </div>
+                        <div class="teams-container">
+                            <div class="team">
+                                {{ game.home_team.abbreviation }}
+                                <span class="font-bold">{{ game.home_team_score }}</span>
+                                <span class="text-gray-400">vs</span>
+                                {{ game.visitor_team.abbreviation }}
+                                <span class="font-bold">{{ game.visitor_team_score }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-gray-500">No recent games available</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
