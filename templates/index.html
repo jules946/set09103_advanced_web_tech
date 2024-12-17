@@ -27,7 +27,11 @@
                                         {{ favorite_player.first_name }} {{ favorite_player.last_name }}
                                     </a>
                                 </h1>
-                            <div class="player-team">{{ favorite_player.team.full_name }}</div>
+                            <div class="player-team">
+                                <a href="{{ url_for('teams.team_details', team_id=favorite_player.team.id) }}">
+                                        {{ favorite_player.team.full_name }}
+                                </a>
+                            </div>
                         </div>
 
                         <div class="player-details">
