@@ -22,7 +22,11 @@
 
                     <div class="player-content">
                         <div class="player-header">
-                            <h1 class="player-name">{{ favorite_player.first_name }} {{ favorite_player.last_name }}</h1>
+                                <h1 class="player-name">
+                                    <a href="{{ url_for('players.player_details', player_id=favorite_player.id) }}" class="hover:text-blue-600">
+                                        {{ favorite_player.first_name }} {{ favorite_player.last_name }}
+                                    </a>
+                                </h1>
                             <div class="player-team">{{ favorite_player.team.full_name }}</div>
                         </div>
 
@@ -78,7 +82,11 @@
 
                     <div class="team-content">
                         <div class="team-header">
-                            <h1 class="team-name">{{ favorite_team.full_name }}</h1>
+                                <h1 class="team-name">
+                                    <a href="{{ url_for('teams.team_details', team_id=favorite_team.id) }}">
+                                        {{ favorite_team.full_name }}
+                                    </a>
+                                </h1>
                             <div class="team-location">{{ favorite_team.city }}</div>
                         </div>
 
@@ -97,7 +105,7 @@
 
                 <!-- Team Upcoming Games -->
                 <div class="games-section bg-white rounded-lg shadow p-4">
-                    <h2 class="text-xl font-bold mb-4">{{ favorite_team.name }} Upcoming Games</h2>
+                    <h2 class="text-xl font-bold mb-4">{{ favorite_team.name }} Next Game</h2>
                     {% if team_upcoming_games %}
                         {% for game in team_upcoming_games %}
                         <div class="game-card mb-3 border-b last:border-b-0 pb-2">
@@ -119,7 +127,7 @@
                 <!-- Player's Team Upcoming Games -->
                 {% if favorite_player.team_id != favorite_team.id %}
                 <div class="games-section bg-white rounded-lg shadow p-4">
-                    <h2 class="text-xl font-bold mb-4">{{ favorite_player.team.name }} Upcoming Games</h2>
+                    <h2 class="text-xl font-bold mb-4">{{ favorite_player.team.name }} Next Game</h2>
                     {% if player_upcoming_games %}
                         {% for game in player_upcoming_games %}
                         <div class="game-card mb-3 border-b last:border-b-0 pb-2">
