@@ -10,7 +10,7 @@
             <select name="team" id="team" required>
                 <option value="">Select a team</option>
                 {% for team in teams %}
-                <option value="{{ team.id }}" {% if current_user.favorite_team == team.id|string %}selected{% endif %}>
+                <option value="{{ team.id }}" {% if current_user.favorite_team|int == team.id %}selected{% endif %}>
                     {{ team.full_name }}
                 </option>
                 {% endfor %}
@@ -22,7 +22,7 @@
             <select name="player" id="player" required>
                 <option value="">Select a player</option>
                 {% for player in players %}
-                <option value="{{ player.id }}" {% if current_user.favorite_player == player.id|string %}selected{% endif %}>
+                <option value="{{ player.id }}" {% if current_user.favorite_player|int == player.id %}selected{% endif %}>
                     {{ player.first_name }} {{ player.last_name }}
                 </option>
                 {% endfor %}
@@ -31,6 +31,4 @@
 
         <button type="submit">Save Preferences</button>
     </form>
-
-    <p><a href="{{ url_for('main.index') }}">Back to Home</a></p>
 {% endblock %}

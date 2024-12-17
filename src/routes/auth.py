@@ -102,5 +102,8 @@ def preferences():
     # get teams and players from API
     teams = NBATeam.query.order_by(NBATeam.name).all()
     players = NBAPlayer.query.order_by(NBAPlayer.last_name).all()
-
-    return render_template('preferences.html', teams=teams, players=players)
+    return render_template(
+        'preferences.html',
+        teams=teams,
+        players=players,
+        current_user=current_user)
