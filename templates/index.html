@@ -69,7 +69,11 @@
                 <!-- Team Card -->
                 <div class="team-card">
                     <div class="team-banner">
-                        <div class="team-banner-placeholder">{{ favorite_team.abbreviation }}</div>
+                        {% if team_logo_url %}
+                            <img src="{{ team_logo_url }}" alt="{{ favorite_team.full_name }} logo">
+                        {% else %}
+                            <div class="team-banner-placeholder">{{ favorite_team.abbreviation }}</div>
+                    {% endif %}
                     </div>
 
                     <div class="team-content">

@@ -2,7 +2,6 @@ from flask import Blueprint, render_template
 from flask_login import current_user
 from ..models import NBAPlayer, NBATeam, Game, PlayerStats
 from ..services.nba_api import NBAAPIService
-from datetime import datetime, timedelta
 
 main_bp = Blueprint('main', __name__)
 nba_api = NBAAPIService()
@@ -50,6 +49,8 @@ def index():
             context['favorite_player'].last_name
         )
 
+        context['team_logo_url'] = nba_api.get_team_logo(context['favorite_team'].full_name)
+
         # Get player's team games if different from favorite team
         if context['favorite_player'].team_id != context['favorite_team'].id:
             context['player_upcoming_games'] = get_team_games(context['favorite_player'].team_id, "upcoming")
@@ -61,7 +62,6 @@ def index():
         return render_template('index.html', **context)
 
     except Exception as e:
-        # Log the error here if you have logging set up
         print(f"Error loading homepage: {str(e)}")
         context['error'] = "There was an error loading your favorites. Please try again later."
         return render_template('index.html', **context)
