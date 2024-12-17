@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
-from ..models import db, User
+from ..models import db, User, NBAPlayer, NBATeam
 from flask_login import login_user, logout_user, login_required, current_user
 
-from ..services.balldontlie_api import BDLAPIService
 
 # create a Blueprint for the auth routes
 auth_bp = Blueprint('auth', __name__)
@@ -87,7 +86,6 @@ def preferences():
     """
     Handle the user preferences route
     """
-    api_service = BDLAPIService()
 
     if request.method == 'POST':
         favorite_team = request.form['team']
@@ -101,8 +99,8 @@ def preferences():
         flash('Preferences saved successfully!', 'success')
         return redirect(url_for('auth.preferences'))
 
-    # Get teams and players from API
-    teams = api_service.search_teams("")
-    players = api_service.search_players("")
+    # get teams and players from API
+    teams = NBATeam.query.order_by(NBATeam.name).all()
+    players = NBAPlayer.query.order_by(NBAPlayer.last_name).all()
 
     return render_template('preferences.html', teams=teams, players=players)
