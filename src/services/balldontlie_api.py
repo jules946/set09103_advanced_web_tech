@@ -72,7 +72,7 @@ class BDLAPIService:
         """
         # get API results
         players = self.search_players(search_query)
-        teams = self.get_all_teams(search_query)
+        teams = self.get_all_teams()
 
         # create unified results list with match scores
         unified_results = []
