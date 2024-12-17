@@ -7,17 +7,21 @@ main_bp = Blueprint('main', __name__)
 nba_api = NBAAPIService()
 
 
-def get_team_games(team_id, status, limit=5):
+def get_team_games(team_id, status, limit=1):
     """Helper function to get team games by status"""
-    return (Game.query
-            .filter(
+    if status == "completed":
+        # games that are finished
+        status_filter = Game.status == "Final"
+    else:  # upcoming/in progress
+        status_filter = Game.status != "Final"
+
+    query = Game.query.filter(
         (Game.home_team_id == team_id) |
         (Game.visitor_team_id == team_id),
-        Game.status == status
-    )
-            .order_by(Game.date.desc() if status == "completed" else Game.date.asc())
-            .limit(limit)
-            .all())
+        status_filter
+    ).order_by(Game.date.desc() if status == "completed" else Game.date.asc()).limit(limit)
+
+    return query.all()
 
 
 @main_bp.route('/')
@@ -36,7 +40,6 @@ def index():
 
         # Get team games
         context['team_upcoming_games'] = get_team_games(context['favorite_team'].id, "upcoming")
-        context['team_recent_games'] = get_team_games(context['favorite_team'].id, "completed")
 
         # Get player stats and picture
         context['player_stats'] = PlayerStats.query.filter_by(
@@ -54,7 +57,6 @@ def index():
         # Get player's team games if different from favorite team
         if context['favorite_player'].team_id != context['favorite_team'].id:
             context['player_upcoming_games'] = get_team_games(context['favorite_player'].team_id, "upcoming")
-            context['player_recent_games'] = get_team_games(context['favorite_player'].team_id, "completed")
         else:
             context['player_upcoming_games'] = context['team_upcoming_games']
             context['player_recent_games'] = context['team_recent_games']
