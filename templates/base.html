@@ -12,23 +12,28 @@
     <title>{% block title %}DunkData: NBA Stats{% endblock %}</title>
 </head>
 <body>
-    {#Nav Bar#}
-    <nav class="nav">
-        <div class="nav-links">
-            <a href="{{ url_for('main.index') }}">Home</a>
-            <a href="{{ url_for('search.unified_search') }}">Search</a>
-        </div>
-        <div class="auth-links">
-            {% if current_user.is_authenticated %}
-                <span>Welcome, {{ current_user.username }}!</span>
-                <a href="{{ url_for('auth.preferences') }}">Preferences</a>
-                <a href="{{ url_for('auth.logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('auth.login') }}">Login</a>
-                <a href="{{ url_for('auth.signup') }}">Register</a>
-            {% endif %}
-        </div>
-    </nav>
+    <div class="container">
+        {#Nav Bar#}
+        <nav class="nav">
+            <div class="nav-links">
+                <a href="{{ url_for('main.index') }}">Home</a>
+                <a href="{{ url_for('search.unified_search') }}">Search</a>
+            </div>
+            <div class="auth-links">
+                {% if current_user.is_authenticated %}
+                    <div class="dropdown">
+                        <span class="dropdown-toggle">Welcome, {{ current_user.username }}!</span>
+                        <div class="dropdown-menu">
+                            <a href="{{ url_for('auth.preferences') }}">Preferences</a>
+                            <a href="{{ url_for('auth.logout') }}">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}">Login</a>
+                    <a href="{{ url_for('auth.signup') }}">Register</a>
+                {% endif %}
+            </div>
+        </nav>
 
     {#Flash messages#}
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -41,8 +46,10 @@
 
     {% block content %}
     {% endblock %}
+    </div>
 
+    {% block scripts %}
     <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
-    {% block scripts %}{% endblock %}
+    {% endblock %}
 </body>
 </html>
