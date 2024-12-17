@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/player_details.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/team_details.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/preferences.css') }}">
     <title>{% block title %}DunkData: NBA Stats{% endblock %}</title>
 </head>
 <body>
@@ -20,6 +21,7 @@
         <div class="auth-links">
             {% if current_user.is_authenticated %}
                 <span>Welcome, {{ current_user.username }}!</span>
+                <a href="{{ url_for('auth.preferences') }}">Preferences</a>
                 <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}">Login</a>

@@ -21,21 +21,25 @@ def create_app():
     app = Flask(__name__, template_folder=templates_folder, static_folder=static_folder)
     # TODO: Set secret key properly
     app.config['SECRET_KEY'] = 'dev_secret_key'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dunk_data.db'
     # disable modification tracking (saves memory)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # register commands
+    from .commands import register_commands
+    register_commands(app)
 
     # initialize db and login manager with app instance
     db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
 
+    # import db models
+    from src.models import User, NBAPlayer, NBATeam, PlayerStats, Game
+
     # create database tables
     with app.app_context():
         db.create_all()
-
-    # import User model
-    from src.models import User
 
     # callback function to reload the user object
     @login_manager.user_loader

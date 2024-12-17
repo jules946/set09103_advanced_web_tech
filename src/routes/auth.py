@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
-from ..models import db, User
-from flask_login import login_user, logout_user, login_required
+from ..models import db, User, NBAPlayer, NBATeam
+from flask_login import login_user, logout_user, login_required, current_user
+
 
 # create a Blueprint for the auth routes
 auth_bp = Blueprint('auth', __name__)
@@ -77,3 +78,32 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('auth.login'))
+
+
+@auth_bp.route('/preferences', methods=['GET', 'POST'])
+@login_required
+def preferences():
+    """
+    Handle the user preferences route
+    """
+
+    if request.method == 'POST':
+        favorite_team = request.form['team']
+        favorite_player = request.form['player']
+
+        with current_app.app_context():
+            current_user.favorite_team = favorite_team
+            current_user.favorite_player = favorite_player
+            db.session.commit()
+
+        flash('Preferences saved successfully!', 'success')
+        return redirect(url_for('auth.preferences'))
+
+    # get teams and players from API
+    teams = NBATeam.query.order_by(NBATeam.name).all()
+    players = NBAPlayer.query.order_by(NBAPlayer.last_name).all()
+    return render_template(
+        'preferences.html',
+        teams=teams,
+        players=players,
+        current_user=current_user)

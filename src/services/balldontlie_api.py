@@ -25,6 +25,22 @@ class BDLAPIService:
             print("Response Text:", response.text)
         return []
 
+    def get_all_players(self, cursor=None, per_page=100):
+        """Get list of all active players with pagination"""
+        all_players = []
+        while True:
+            params = {"per_page": per_page}
+            if cursor:
+                params["cursor"] = cursor
+            response = requests.get(f"{self.base_url}/players/active", headers=self.headers, params=params)
+            data = self.process_response(response)
+            all_players.extend(data)
+            meta = response.json().get("meta", {})
+            cursor = meta.get("next_cursor")
+            if not cursor:
+                break
+        return all_players
+
     def get_player(self, player_id):
         """Get player details by ID"""
         response = requests.get(f"{self.base_url}/players/{player_id}", headers=self.headers)
@@ -36,7 +52,7 @@ class BDLAPIService:
         response = requests.get(f"{self.base_url}/players/active", headers=self.headers, params=params)
         return self.process_response(response)
 
-    def search_teams(self, search_query):
+    def get_all_teams(self):
         """
         Get lis of all teams.
         """
@@ -56,7 +72,7 @@ class BDLAPIService:
         """
         # get API results
         players = self.search_players(search_query)
-        teams = self.search_teams(search_query)
+        teams = self.get_all_teams(search_query)
 
         # create unified results list with match scores
         unified_results = []
