@@ -69,7 +69,7 @@
                     {% for game in upcoming_games %}
                     <div class="game-card mb-3 p-4 bg-white rounded shadow">
                         <div class="game-date text-sm text-gray-600">
-                            {{ game.date }}
+                            {{ game.date.strftime('%d %B %Y') }}
                         </div>
                         <div class="teams-container">
                             <div class="team">
@@ -92,7 +92,7 @@
                     {% for game in recent_games %}
                     <div class="game-card mb-3 p-4 bg-white rounded shadow">
                         <div class="game-date text-sm text-gray-600">
-                            {{ game.date }}
+                            {{ game.date.strftime('%d %B %Y') }}
                         </div>
                         <div class="teams-container">
                             <div class="team">
