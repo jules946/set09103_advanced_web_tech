@@ -1,11 +1,9 @@
 from flask import Blueprint, render_template, abort
-from ..services.balldontlie_api import BDLAPIService
 from ..services.nba_api import NBAAPIService
 from ..models import NBAPlayer, PlayerStats
 from src.routes.main import get_team_games
 
 players_bp = Blueprint('players', __name__)
-bdl_api = BDLAPIService()
 nba_api = NBAAPIService()
 
 @players_bp.route('/player/<int:player_id>')
