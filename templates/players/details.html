@@ -15,7 +15,11 @@
                 <div class="player-content">
                     <div class="player-header">
                         <h1 class="player-name">{{ player.first_name }} {{ player.last_name }}</h1>
-                        <div class="player-team">{{ player.team.full_name }}</div>
+                        <div class="player-team">
+                            <a href="{{ url_for('teams.team_details', team_id=player.team.id) }}">
+                                    {{ player.team.full_name }}
+                            </a>
+                        </div>
                     </div>
 
                     <div class="player-details">
@@ -73,9 +77,15 @@
                         </div>
                         <div class="teams-container">
                             <div class="team">
-                                {{ game.home_team.abbreviation }}
+                                <a href="{{ url_for('teams.team_details', team_id=game.home_team.id) }}">
+                                    {{ game.home_team.abbreviation }}
+                                </a>
+                                <span class="font-bold">{{ game.home_team_score }}</span>
                                 <span class="text-gray-400">vs</span>
-                                {{ game.visitor_team.abbreviation }}
+                                <a href="{{ url_for('teams.team_details', team_id=game.visitor_team.id) }}">
+                                    {{ game.visitor_team.abbreviation }}
+                                </a>
+                                <span class="font-bold">{{ game.visitor_team_score }}</span>
                             </div>
                         </div>
                     </div>
@@ -96,10 +106,14 @@
                         </div>
                         <div class="teams-container">
                             <div class="team">
-                                {{ game.home_team.abbreviation }}
+                                <a href="{{ url_for('teams.team_details', team_id=game.home_team.id) }}">
+                                    {{ game.home_team.abbreviation }}
+                                </a>
                                 <span class="font-bold">{{ game.home_team_score }}</span>
                                 <span class="text-gray-400">vs</span>
-                                {{ game.visitor_team.abbreviation }}
+                                <a href="{{ url_for('teams.team_details', team_id=game.visitor_team.id) }}">
+                                    {{ game.visitor_team.abbreviation }}
+                                </a>
                                 <span class="font-bold">{{ game.visitor_team_score }}</span>
                             </div>
                         </div>
