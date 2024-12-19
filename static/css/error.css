@@ -1,0 +1,37 @@
+.error-container {
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+}
+
+.error-container h1 {
+    font-size: 6rem;
+    margin: 0;
+    color: #b13e3e;
+}
+
+.error-container h2 {
+    font-size: 2rem;
+    margin: 1rem 0;
+    color: #333;
+}
+
+.error-container p {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.back-home {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #b13e3e;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.back-home:hover {
+    background-color: #943232;
+}
