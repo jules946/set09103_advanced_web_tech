@@ -25,7 +25,6 @@ def get_team_games(team_id, status, limit=1):
     return query.all()
 
 
-
 @main_bp.route('/')
 def index():
     context = {
