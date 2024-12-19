@@ -99,7 +99,7 @@ def preferences():
         flash('Preferences saved successfully!', 'success')
         return redirect(url_for('auth.preferences'))
 
-    # get teams and players from API
+    # get teams and players from database
     teams = NBATeam.query.order_by(NBATeam.name).all()
     players = NBAPlayer.query.order_by(NBAPlayer.last_name).all()
     return render_template(
