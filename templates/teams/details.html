@@ -37,6 +37,40 @@
                         </div>
                     </div>
 
+                    <div class="team-players">
+                        <h2 class="text-xl font-bold mb-4">Active Players</h2>
+                        <div class="players-table-container">
+                            {% if team_players %}
+                                <table class="players-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Height</th>
+                                            <th>Weight</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for player in team_players %}
+                                        <tr>
+                                            <td>
+                                                <a href="{{ url_for('players.player_details', player_id=player.id) }}">
+                                                    {{ player.first_name }} {{ player.last_name }}
+                                                </a>
+                                            </td>
+                                            <td>{{ player.position }}</td>
+                                            <td>{{ player.height }}</td>
+                                            <td>{{ player.weight }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p class="text-gray-500">No players available</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     {% if team_stats %}
                     <div class="stats-section">
                         <h2 class="stats-header">Season Statistics</h2>

@@ -1,14 +1,20 @@
 from src import create_app, db
+from sqlalchemy import text
 
 
 def init_db():
     app = create_app()
     with app.app_context():
 
-        # drop all tables first (don't do this in production :))
-        db.drop_all()
+        # create a connection to execute raw SQL
+        with db.engine.connect() as connection:
+            # disable foreign key checks temporarily
+            connection.execute(text("DROP SCHEMA public CASCADE;"))
+            connection.execute(text("CREATE SCHEMA public;"))
+            connection.execute(text("GRANT ALL ON SCHEMA public TO postgres;"))
+            connection.execute(text("GRANT ALL ON SCHEMA public TO public;"))
 
-        # create all tables
+        # Create all tables
         db.create_all()
 
         print("Database initialized!")
