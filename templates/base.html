@@ -16,10 +16,33 @@
     <div class="container">
         {#Nav Bar#}
         <nav class="nav">
-            <div class="nav-links">
-                <a href="{{ url_for('main.index') }}">Home</a>
-                <a href="{{ url_for('search.search_page') }}">Search</a>
+            <div class="nav-section">
+                <a href="{{ url_for('main.index') }}" class="nav-logo">Home</a>
+
+                <form action="{{ url_for('search.search_page') }}" method="GET" class="nav-search" onsubmit="return validateSearch(event)">
+                    <input
+                        type="text"
+                        name="q"
+                        placeholder="Search players or teams..."
+                        class="nav-search-input"
+                        value="{{ request.args.get('q', '') }}"
+                    >
+                    <button type="submit" class="nav-search-button">
+                        Search
+                    </button>
+                </form>
+                <script>
+                    function validateSearch(event) {
+                        const searchInput = event.target.querySelector('input[name="q"]');
+                        if (!searchInput.value.trim()) {
+                            event.preventDefault();
+                            return false;
+                        }
+                        return true;
+                    }
+                </script>
             </div>
+
             <div class="auth-links">
                 {% if current_user.is_authenticated %}
                     <div class="dropdown">
