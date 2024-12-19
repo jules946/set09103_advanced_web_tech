@@ -1,20 +1,36 @@
+/*============*/
+/*Base styles*/
+/*==========*/
+body {
+    margin: 10px;
+    font-family: system-ui, -apple-system, sans-serif;
+}
 
-/*Navigation Bar Styling*/
+/*==================*/
+/*!* Navigation Bar*/
+/*=================*/
 .nav {
     background-color: #b13e3e;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
+    border-radius: 10px;
 }
 
+/* Navigation link containers */
 .nav-links,
 .auth-links {
     display: flex;
     gap: 1rem;
 }
 
+.auth-links {
+    position: relative; /* Required for dropdown positioning */
+}
+
+/* Navigation links styling */
 .nav-links a,
 .auth-links a {
     color: white;
@@ -26,11 +42,72 @@
     text-decoration: underline;
 }
 
-/* Flash Message Styling */
+/*==============*/
+/*Dropdown Menu*/
+/*=============*/
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Dropdown button styling */
+.dropdown-toggle {
+    color: #fff;
+    padding: 10px;
+    white-space: nowrap; /* Prevents text wrapping in button */
+}
+
+/* Dropdown content container */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.8rem); /* Space between button and dropdown */
+    right: 0;
+    background-color: #333;
+    width: 100%;
+    min-width: 100%;   /* Ensures dropdown is at least as wide as button */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    border-radius: 4px;
+    text-align: left;
+    padding: 5px 0;
+    white-space: nowrap;
+}
+
+/* Dropdown menu items */
+.dropdown-menu a {
+    color: #fff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Dropdown hover effects */
+.dropdown-menu a:hover {
+    background-color: #444;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block; /* Shows dropdown menu on hover */
+}
+
+/*==========*/
+/*Container*/
+/*========*/
+.container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+/*===============*/
+/*Flash Messages*/
+/*=============*/
 .flash-message {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 5%;
     width: 250px;
     padding: 15px;
     border: 1px solid #f5c6cb;
@@ -42,6 +119,7 @@
     transition: opacity 1s ease-out;
 }
 
+/* Flash message variants */
 .flash-success {
     background-color: #4caf50;
     color: white;
@@ -59,10 +137,4 @@
 
 .fade-out {
     opacity: 0;
-}
-
-
-body {
-    margin: 10px;
-    font-family: system-ui, -apple-system, sans-serif;
 }

@@ -1,0 +1,14 @@
+/*Wrapper class for some elements defined in player/team details.css*/
+.home-page-grid .team-card {
+    height: auto;
+    min-height: min-content;
+    margin-bottom: 2rem;
+}
+
+.home-page-grid .team-banner {
+    height: 200px;
+}
+
+.home-page-grid .team-content {
+    flex-grow: 0;
+}
