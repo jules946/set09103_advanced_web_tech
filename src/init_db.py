@@ -11,7 +11,6 @@ def init_db():
             # disable foreign key checks temporarily
             connection.execute(text("DROP SCHEMA public CASCADE;"))
             connection.execute(text("CREATE SCHEMA public;"))
-            connection.execute(text("GRANT ALL ON SCHEMA public TO postgres;"))
             connection.execute(text("GRANT ALL ON SCHEMA public TO public;"))
 
         # Create all tables
