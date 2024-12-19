@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
@@ -66,5 +66,24 @@ def create_app():
     app.register_blueprint(players_bp)
     app.register_blueprint(search_bp)
     app.register_blueprint(teams_bp)
+
+    # register error handlers
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template(
+            'error.html',
+            code=404,
+            message="Page Not Found",
+            description="The page you're looking for doesn't exist or has been moved."
+        ), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return render_template(
+            'error.html',
+            code=500,
+            message="Internal Server Error",
+            description="Something went wrong on our end. Please try again later."
+        ), 500
 
     return app
