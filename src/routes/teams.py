@@ -16,6 +16,9 @@ def team_details(team_id):
     if not team:
         abort(404)
 
+    # get team players
+    team_players = team.players
+
     # get 3 upcoming and recent team games from db
     upcoming_team_games = get_team_games(team_id, status="upcoming", limit=3)
     recent_team_games = get_team_games(team_id, status="completed", limit=3)
@@ -26,6 +29,7 @@ def team_details(team_id):
     return render_template(
         'teams/details.html',
         team=team,
+        team_players=team_players,
         upcoming_games=upcoming_team_games,
         recent_games=recent_team_games,
         team_logo_url=team_logo_url

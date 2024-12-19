@@ -26,19 +26,22 @@ def sync_all_data():
     # teams sync
     teams = api_service.get_all_teams()
     for team_data in teams:
-        team = NBATeam.query.get(team_data['id'])
-        if not team:
-            team = NBATeam(id=team_data['id'])
+        # check if 'conference' or 'city' exists and is not empty
+        # if we don't do this the API will return teams that no longer exist
+        if team_data.get('conference') or team_data.get('city'):
+            team = NBATeam.query.get(team_data['id'])
+            if not team:
+                team = NBATeam(id=team_data['id'])
 
-        team.name = team_data['name']
-        team.full_name = team_data['full_name']
-        team.abbreviation = team_data['abbreviation']
-        team.city = team_data['city']
-        team.conference = team_data['conference']
-        team.division = team_data['division']
-        team.last_updated = datetime.now(timezone.utc)
+            team.name = team_data['name']
+            team.full_name = team_data['full_name']
+            team.abbreviation = team_data['abbreviation']
+            team.city = team_data['city']
+            team.conference = team_data['conference']
+            team.division = team_data['division']
+            team.last_updated = datetime.now(timezone.utc)
 
-        db.session.add(team)
+            db.session.add(team)
     db.session.commit()
     print("Team sync complete!")
 
@@ -103,7 +106,7 @@ def sync_all_data():
     two_weeks_future = now + timedelta(weeks=2)
 
     for index, team in enumerate(NBATeam.query.all(), 1):
-        print(f"Processing games for team {index}/{len(teams)}: {team.full_name}")
+        print(f"Processing game data for team {index}/{len(teams)}: {team.full_name}")
 
         time.sleep(0.6)
         upcoming = api_service.get_team_games(team.id, "upcoming")
