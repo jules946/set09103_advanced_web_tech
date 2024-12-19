@@ -51,6 +51,17 @@ body {
     cursor: pointer;
 }
 
+/* pseudo-element so cursoer can hover between username and go to below the nav bar */
+.dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 0.8rem;
+    background-color: transparent;
+}
+
 /* Dropdown button styling */
 .dropdown-toggle {
     color: #fff;
@@ -73,6 +84,14 @@ body {
     text-align: left;
     padding: 5px 0;
     white-space: nowrap;
+}
+
+/* Increasing the safe block of the dropdown so the mouse can travel from user name to under the nav bar
+without hiding the drop down*/
+.dropdown:hover .dropdown-menu,
+.dropdown::after:hover + .dropdown-menu,
+.dropdown-menu:hover {
+    display: block;
 }
 
 /* Dropdown menu items */
