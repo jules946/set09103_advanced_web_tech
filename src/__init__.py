@@ -19,10 +19,19 @@ def create_app():
 
 
     app = Flask(__name__, template_folder=templates_folder, static_folder=static_folder)
-    # TODO: Set secret key properly
-    app.config['SECRET_KEY'] = 'dev_secret_key'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dunk_data.db'
-    # disable modification tracking (saves memory)
+
+    # configure db and secret key from environment variables
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'DEV_SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+        'DATABASE_URL',
+        'postgresql://postgres:postgres@localhost:5432/dunk_data'
+    )
+
+    # handle special case for Heroku Postgres URL format
+    if app.config['SQLALCHEMY_DATABASE_URI'].startswith('postgres://'):
+        app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace('postgres://',
+                                                                                              'postgresql://', 1)
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # register commands
