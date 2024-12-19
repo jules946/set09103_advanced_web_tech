@@ -4,8 +4,9 @@
 
 {% block content %}
 <div class="main-content">
-    <h1 class="text-2xl font-bold mb-6">Your Favorites</h1>
+    <h1 class="text-2xl font-bold mb-6">{{ main_page_title }}</h1>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 home-page-grid">
+
         <!-- Left Column - Player Card -->
         <div>
             <div class="player-card">
@@ -29,15 +30,15 @@
 
                     <div class="player-details">
                         <div class="detail-item">
-                            <span>Position</span>
+                            <span class="label">Position</span>
                             <span>{{ favorite_player.position }}</span>
                         </div>
                         <div class="detail-item">
-                            <span>Height</span>
+                            <span class="label">Height</span>
                             <span>{{ favorite_player.height }}</span>
                         </div>
                         <div class="detail-item">
-                            <span>Weight</span>
+                            <span class="label">Weight</span>
                             <span>{{ favorite_player.weight }} lbs</span>
                         </div>
                     </div>
@@ -89,11 +90,11 @@
 
                     <div class="team-details">
                         <div class="detail-item">
-                            <span>Conference</span>
+                            <span class="label">Conference</span>
                             <span>{{ favorite_team.conference }}</span>
                         </div>
                         <div class="detail-item">
-                            <span>Division</span>
+                            <span class="label">Division</span>
                             <span>{{ favorite_team.division }}</span>
                         </div>
                     </div>
@@ -112,12 +113,10 @@
                                 <a href="{{ url_for('teams.team_details', team_id=game.home_team.id) }}">
                                     {{ game.home_team.abbreviation }}
                                 </a>
-                                <span class="font-bold">{{ game.home_team_score }}</span>
                                 <span class="text-gray-400">vs</span>
                                 <a href="{{ url_for('teams.team_details', team_id=game.visitor_team.id) }}">
                                     {{ game.visitor_team.abbreviation }}
                                 </a>
-                                <span class="font-bold">{{ game.visitor_team_score }}</span>
                             </div>
                         </div>
                     </div>
@@ -140,12 +139,10 @@
                                 <a href="{{ url_for('teams.team_details', team_id=game.home_team.id) }}">
                                     {{ game.home_team.abbreviation }}
                                 </a>
-                                <span class="font-bold">{{ game.home_team_score }}</span>
                                 <span class="text-gray-400">vs</span>
                                 <a href="{{ url_for('teams.team_details', team_id=game.visitor_team.id) }}">
                                     {{ game.visitor_team.abbreviation }}
                                 </a>
-                                <span class="font-bold">{{ game.visitor_team_score }}</span>
                             </div>
                         </div>
                     </div>

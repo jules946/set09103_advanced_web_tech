@@ -29,9 +29,17 @@ body {
 
 .nav-logo {
     color: white;
-    text-decoration: none;
     font-weight: 600;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.nav-logo-image {
+    height: 60px;
+    width: auto;
 }
 
 .nav-search {

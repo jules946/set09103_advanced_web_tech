@@ -36,10 +36,12 @@ def index():
         if not current_user.is_authenticated or not current_user.favorite_team or not current_user.favorite_player:
             context['favorite_team'] = NBATeam.query.order_by(func.random()).first()
             context['favorite_player'] = NBAPlayer.query.order_by(func.random()).first()
+            context['main_page_title'] = "Player and Team Spotlight"
         else:
             # Fetch user's favorite team and player
             context['favorite_team'] = NBATeam.query.get_or_404(current_user.favorite_team)
             context['favorite_player'] = NBAPlayer.query.get_or_404(current_user.favorite_player)
+            context['main_page_title'] = "Your Favourites"
 
         # Get team games
         context['team_upcoming_games'] = get_team_games(context['favorite_team'].id, "upcoming")
