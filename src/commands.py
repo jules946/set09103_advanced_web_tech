@@ -28,7 +28,7 @@ def sync_all_data():
     for team_data in teams:
         # check if 'conference' or 'city' exists and is not empty
         # if we don't do this the API will return teams that no longer exist
-        if team_data.get('conference') or team_data.get('city'):
+        if team_data.get('conference', '').strip() or team_data.get('city', '').strip():
             team = NBATeam.query.get(team_data['id'])
             if not team:
                 team = NBATeam(id=team_data['id'])
