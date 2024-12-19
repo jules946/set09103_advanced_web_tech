@@ -108,10 +108,16 @@
                     <div class="game-card mb-3 border-b last:border-b-0 pb-2">
                         <div class="game-date text-sm text-gray-600">{{ game.date.strftime('%d %B %Y') }}</div>
                         <div class="teams-container">
-                            <div class="team font-medium">
-                                {{ game.home_team.abbreviation }}
+                            <div class="team">
+                                <a href="{{ url_for('teams.team_details', team_id=game.home_team.id) }}">
+                                    {{ game.home_team.abbreviation }}
+                                </a>
+                                <span class="font-bold">{{ game.home_team_score }}</span>
                                 <span class="text-gray-400">vs</span>
-                                {{ game.visitor_team.abbreviation }}
+                                <a href="{{ url_for('teams.team_details', team_id=game.visitor_team.id) }}">
+                                    {{ game.visitor_team.abbreviation }}
+                                </a>
+                                <span class="font-bold">{{ game.visitor_team_score }}</span>
                             </div>
                         </div>
                     </div>
@@ -130,10 +136,16 @@
                     <div class="game-card mb-3 border-b last:border-b-0 pb-2">
                         <div class="game-date text-sm text-gray-600">{{ game.date.strftime('%d %B %Y') }}</div>
                         <div class="teams-container">
-                            <div class="team font-medium">
-                                {{ game.home_team.abbreviation }}
+                            <div class="team">
+                                <a href="{{ url_for('teams.team_details', team_id=game.home_team.id) }}">
+                                    {{ game.home_team.abbreviation }}
+                                </a>
+                                <span class="font-bold">{{ game.home_team_score }}</span>
                                 <span class="text-gray-400">vs</span>
-                                {{ game.visitor_team.abbreviation }}
+                                <a href="{{ url_for('teams.team_details', team_id=game.visitor_team.id) }}">
+                                    {{ game.visitor_team.abbreviation }}
+                                </a>
+                                <span class="font-bold">{{ game.visitor_team_score }}</span>
                             </div>
                         </div>
                     </div>
