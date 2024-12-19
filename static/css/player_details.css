@@ -106,6 +106,10 @@
     border-radius: 6px;
 }
 
+.label {
+    font-weight: bold;
+    margin-right: 1rem;
+}
 /*=================*/
 /*Stats Components*/
 /*===============*/
