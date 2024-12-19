@@ -69,14 +69,16 @@
 
 .player-name a,
 .team-name a,
-.player-team a {
+.player-team a,
+.team a{
     text-decoration: none;
     color: #333;
 }
 
 .player-name a:hover,
 .team-name a:hover,
-.player-team a:hover {
+.player-team a:hover,
+.team a:hover {
     color: #757575;
     transition: color 0.2s;
 }
