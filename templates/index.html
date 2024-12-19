@@ -106,7 +106,7 @@
                 {% if team_upcoming_games %}
                     {% for game in team_upcoming_games %}
                     <div class="game-card mb-3 border-b last:border-b-0 pb-2">
-                        <div class="game-date text-sm text-gray-600">{{ game.date.strftime('%B %d, %Y') }}</div>
+                        <div class="game-date text-sm text-gray-600">{{ game.date.strftime('%d %B %Y') }}</div>
                         <div class="teams-container">
                             <div class="team font-medium">
                                 {{ game.home_team.abbreviation }}
@@ -128,7 +128,7 @@
                 {% if player_upcoming_games %}
                     {% for game in player_upcoming_games %}
                     <div class="game-card mb-3 border-b last:border-b-0 pb-2">
-                        <div class="game-date text-sm text-gray-600">{{ game.date.strftime('%B %d, %Y') }}</div>
+                        <div class="game-date text-sm text-gray-600">{{ game.date.strftime('%d %B %Y') }}</div>
                         <div class="teams-container">
                             <div class="team font-medium">
                                 {{ game.home_team.abbreviation }}
