@@ -10,13 +10,7 @@
         <div>
             <div class="player-card">
                 <div class="player-image">
-                   {% if player_pic_url %}
                        <img src="{{ player_pic_url }}" alt="{{ favorite_player.first_name }} {{ favorite_player.last_name }}">
-                   {% else %}
-                       <div class="player-image-placeholder">
-                           {{ favorite_player.first_name[0] }}{{ favorite_player.last_name[0] }}
-                       </div>
-                   {% endif %}
                 </div>
 
                 <div class="player-content">

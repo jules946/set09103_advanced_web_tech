@@ -33,7 +33,7 @@
                         </div>
                         <div class="detail-item">
                             <span>Games</span>
-                            <span>{{ stats[0].games_played }}</span>
+                            <span>{{ stats.games_played }}</span>
                         </div>
                     </div>
 
@@ -43,15 +43,15 @@
                         <div class="stats-grid">
                             <div class="stat-item">
                                 <span class="stat-label">Points</span>
-                                <span class="stat-value">{{ "%.1f"|format(stats[0].pts) }}</span>
+                                <span class="stat-value">{{ "%.1f"|format(stats.pts) }}</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-label">Rebounds</span>
-                                <span class="stat-value">{{ "%.1f"|format(stats[0].reb) }}</span>
+                                <span class="stat-value">{{ "%.1f"|format(stats.reb) }}</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-label">Assists</span>
-                                <span class="stat-value">{{ "%.1f"|format(stats[0].ast) }}</span>
+                                <span class="stat-value">{{ "%.1f"|format(stats.ast) }}</span>
                             </div>
                         </div>
                     </div>

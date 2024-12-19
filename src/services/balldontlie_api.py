@@ -1,7 +1,5 @@
 import os
 import requests
-from typing import Dict, List
-from rapidfuzz import fuzz
 from datetime import datetime, timedelta
 
 class BDLAPIService:
@@ -64,66 +62,6 @@ class BDLAPIService:
         """Get team details by ID"""
         response = requests.get(f"{self.base_url}/teams/{team_id}", headers=self.headers)
         return self.process_response(response)
-
-    def unified_search(self, search_query: str) -> Dict[str, List]:
-        """
-        Perform a unified search for both players and teams,
-        returning results sorted by match relevance.
-        """
-        # get API results
-        players = self.search_players(search_query)
-        teams = self.get_all_teams()
-
-        # create unified results list with match scores
-        unified_results = []
-
-        # helper function to calculate normalized scores
-        def calculate_score(query: str, target: str) -> float:
-            # primary score using WRatio
-            calculated_score = fuzz.WRatio(query.lower(), target.lower())
-
-            # adjust score if search query is a substring of target
-            # e.g. "LeBron" should match "LeBron James"
-            if query.lower() in target.lower():
-                calculated_score += int((len(query) / len(target)) * 20)
-
-            return min(calculated_score, 100)
-
-        # process players
-        for player in players:
-            name = f"{player['first_name']} {player['last_name']}"
-            score = calculate_score(search_query, name)
-
-            if score > 80:
-                unified_results.append({
-                    "type": "player",
-                    "data": player,
-                    "score": score
-                })
-
-        # process teams
-        for team in teams:
-            # calculate match scores for both full_name and name
-            full_name_score = calculate_score(search_query, team["full_name"])
-            name_score = calculate_score(search_query, team["name"])
-
-            # only consider the higher of the two scores
-            score = max(full_name_score, name_score)
-
-            if score > 80:
-                unified_results.append({
-                    "type": "team",
-                    "data": team,
-                    "score": score
-                })
-
-        # sort all results by score, descending
-        unified_results.sort(key=lambda x: x['score'], reverse=True)
-
-        return {
-            "results": unified_results,
-            "total_results": len(unified_results)
-        }
 
     def get_player_stats(self, player_id, season=2024):
         """Get player stats for a specific season"""
